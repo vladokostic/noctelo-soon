@@ -174,7 +174,7 @@
   <div id="emailPanel">
     <p class="email-label" id="emailLabel">Zadaj mailovú adresu:</p>
     <input class="email-input" id="emailInput" type="email" placeholder="tvoj@email.com" autocomplete="email" />
-    <button class="email-btn" id="emailBtn" onclick="submitEmail()">Daj mi vedieť</button>
+    <button class="email-btn" id="emailBtn">Daj mi vedieť</button>
     <p class="email-msg" id="emailMsg"></p>
   </div>
 
@@ -277,15 +277,18 @@
   const emailPanel = document.getElementById('emailPanel')
   let panelVisible = false
 
-  star.addEventListener('click', function(e) {
+  function handleStarTap(e) {
     if (e.ctrlKey && e.shiftKey) { window.location.href = '/api/go'; return }
+    if (e.cancelable) e.preventDefault()
     if (!panelVisible) {
       emailPanel.classList.add('visible')
       document.getElementById('starHint').style.display = 'none'
       panelVisible = true
       setTimeout(() => document.getElementById('emailInput').focus(), 100)
     }
-  })
+  }
+  star.addEventListener('click', handleStarTap)
+  star.addEventListener('touchend', handleStarTap, { passive: false })
 
   // Odoslanie emailu
   async function submitEmail() {
@@ -324,6 +327,11 @@
       } else if (res.status === 409) {
         msg.className = 'email-msg success'; msg.textContent = t.duplicate
         btn.disabled = false; btn.textContent = t.emailBtn
+        // Hviezda zmizne aj pri duplicate
+        const sd = document.getElementById('floatingStar')
+        sd.style.transition = 'opacity 0.8s ease'
+        sd.style.opacity = '0'
+        setTimeout(() => { sd.style.display = 'none' }, 800)
       } else { throw new Error('status ' + res.status) }
     } catch {
       msg.className = 'email-msg error'; msg.textContent = t.error
@@ -332,6 +340,8 @@
   }
 
   document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitEmail() })
+  document.getElementById('emailBtn').addEventListener('click', submitEmail)
+  document.getElementById('emailBtn').addEventListener('touchend', function(e) { e.preventDefault(); submitEmail() }, { passive: false })
   }) // end window.onload
 </script>
 </body>
