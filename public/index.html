@@ -20,7 +20,6 @@
       position: relative;
     }
 
-    /* Pozadie hviezdy */
     .bg-stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
     .bg-star {
       position: absolute; border-radius: 50%;
@@ -32,7 +31,41 @@
       50% { opacity: var(--op); transform: scale(1); }
     }
 
-    /* Obsah */
+    #langBtn {
+      position: fixed; top: 28px; right: 16px; z-index: 200;
+      background: rgba(15,6,0,0.60);
+      border: 1px solid rgba(255,160,0,0.30);
+      border-radius: 10px; color: #D9923A;
+      font-size: 13px; font-weight: 700;
+      padding: 7px 12px; cursor: pointer;
+      font-family: Georgia, serif;
+      display: flex; align-items: center; gap: 6px;
+      backdrop-filter: blur(6px); outline: none;
+    }
+
+    #langOverlay { display: none; position: fixed; inset: 0; z-index: 199; }
+    #langOverlay.open { display: block; }
+
+    #langDropdown {
+      display: none; position: fixed; top: 64px; right: 16px;
+      background: #2A1000;
+      border: 1px solid rgba(255,140,0,0.28);
+      border-radius: 12px; overflow: hidden;
+      min-width: 185px; z-index: 201;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.70);
+    }
+    #langDropdown.open { display: block; }
+
+    .lang-item {
+      display: block; width: 100%; text-align: left;
+      padding: 11px 16px; background: transparent;
+      border: none; border-bottom: 1px solid rgba(255,140,0,0.08);
+      color: #CC8833; font-size: 14px; font-weight: 500;
+      cursor: pointer; font-family: Georgia, serif;
+    }
+    .lang-item:last-child { border-bottom: none; }
+    .lang-item.active { background: rgba(255,140,0,0.18); color: #FFE8A0; font-weight: 700; }
+
     .content {
       position: relative; z-index: 10;
       display: flex; flex-direction: column; align-items: center;
@@ -41,49 +74,36 @@
 
     .title {
       font-size: clamp(38px, 10vw, 66px);
-      font-weight: 700; letter-spacing: 0.18em;
-      color: #FFD050;
+      font-weight: 700; letter-spacing: 0.18em; color: #FFD050;
       text-shadow: 0 0 40px rgba(255,180,0,0.5), 0 0 80px rgba(255,140,0,0.2);
       margin-bottom: 36px;
+      font-family: Georgia, "Times New Roman", serif;
     }
 
-    .logo-img {
-      width: min(320px, 82vw); height: auto;
-      border-radius: 18px; margin-bottom: 32px; display: block;
-    }
+    .logo-img { width: min(320px, 82vw); height: auto; border-radius: 18px; margin-bottom: 32px; display: block; }
 
     .tagline {
-      font-size: clamp(15px, 4vw, 18px);
-      line-height: 1.85; color: rgba(255,220,140,0.85);
-      text-align: center; margin-bottom: 52px; max-width: 380px;
+      font-size: clamp(15px, 4vw, 18px); line-height: 1.85;
+      color: rgba(255,220,140,0.85); text-align: center;
+      margin-bottom: 52px; max-width: 380px;
     }
-    .tagline hr {
-      border: none; border-top: 1px solid rgba(255,160,0,0.2);
-      margin: 18px 0;
-    }
+    .tagline hr { border: none; border-top: 1px solid rgba(255,160,0,0.2); margin: 18px 0; }
 
-    /* Plávajúca hviezda */
     #floatingStar {
-      position: fixed;
-      width: 46px; height: 46px;
-      cursor: pointer; z-index: 200;
+      position: fixed; width: 46px; height: 46px;
+      cursor: pointer; z-index: 150;
       filter: drop-shadow(0 0 8px rgba(255,200,0,0.65));
-      transition: filter 0.2s;
-      user-select: none;
+      transition: filter 0.2s; user-select: none;
     }
-    #floatingStar:hover {
-      filter: drop-shadow(0 0 20px rgba(255,220,0,1));
-    }
+    #floatingStar:hover { filter: drop-shadow(0 0 20px rgba(255,220,0,1)); }
 
-    /* Email panel */
     #emailPanel {
       display: none; flex-direction: column; align-items: center; gap: 12px;
       background: rgba(30,10,0,0.94);
       border: 1.5px solid rgba(255,160,0,0.3);
       border-radius: 20px; padding: 28px 24px;
       max-width: 340px; width: 90%;
-      animation: fadeIn 0.35s ease;
-      margin-bottom: 32px;
+      animation: fadeIn 0.35s ease; margin-bottom: 32px;
     }
     #emailPanel.visible { display: flex; }
     @keyframes fadeIn {
@@ -91,34 +111,26 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .email-label {
-      font-size: 15px; color: rgba(255,220,140,0.82);
-      text-align: center; line-height: 1.6;
-    }
+    .email-label { font-size: 15px; color: rgba(255,220,140,0.82); text-align: center; line-height: 1.6; }
     .email-input {
-      width: 100%;
-      background: rgba(255,140,0,0.08);
+      width: 100%; background: rgba(255,140,0,0.08);
       border: 1.5px solid rgba(255,140,0,0.3);
       border-radius: 12px; padding: 12px 16px;
-      color: #FFE8A0; font-size: 16px;
-      font-family: inherit; outline: none; text-align: center;
+      color: #FFE8A0; font-size: 16px; font-family: inherit; outline: none; text-align: center;
     }
     .email-input::placeholder { color: rgba(255,160,0,0.35); }
     .email-input:focus { border-color: rgba(255,160,0,0.65); }
 
     .email-btn {
-      width: 100%; padding: 13px;
-      background: #CC7700; border: none; border-radius: 12px;
-      color: #FFE8A0; font-size: 15px; font-weight: 700;
-      font-family: inherit; cursor: pointer; transition: background 0.2s;
+      width: 100%; padding: 13px; background: #CC7700;
+      border: none; border-radius: 12px; color: #FFE8A0;
+      font-size: 15px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: background 0.2s;
     }
     .email-btn:hover:not(:disabled) { background: #E08800; }
     .email-btn:disabled { background: rgba(255,140,0,0.2); cursor: default; }
 
-    .email-msg {
-      font-size: 14px; text-align: center; line-height: 1.6;
-      display: none;
-    }
+    .email-msg { font-size: 14px; text-align: center; line-height: 1.6; display: none; }
     .email-msg.success { color: #88CC44; display: block; }
     .email-msg.error   { color: #CC4433; display: block; }
 
@@ -137,24 +149,30 @@
 
 <div class="bg-stars" id="bgStars"></div>
 
-<svg id="floatingStar" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg" title="Ťukni na hviezdu">
+<button id="langBtn" onclick="toggleLang()">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>
+  <span id="langLabel">SK</span>
+</button>
+<div id="langOverlay" onclick="closeLang()"></div>
+<div id="langDropdown"></div>
+
+<svg id="floatingStar" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
   <circle cx="23" cy="23" r="19" fill="rgba(255,200,0,0.07)"/>
   <circle cx="23" cy="23" r="12" fill="rgba(255,200,0,0.11)"/>
-  <polygon
-    points="23,4 27.8,17 42,17 30.6,25.6 34.9,38.5 23,30.5 11.1,38.5 15.4,25.6 4,17 18.2,17"
-    fill="#FFD050"
-    stroke="rgba(255,230,100,0.55)" stroke-width="0.6"
-  />
+  <polygon points="23,4 27.8,17 42,17 30.6,25.6 34.9,38.5 23,30.5 11.1,38.5 15.4,25.6 4,17 18.2,17"
+    fill="#FFD050" stroke="rgba(255,230,100,0.55)" stroke-width="0.6"/>
 </svg>
 
 <div class="content">
-
   <div class="title">NOCTELO</div>
-
   <img class="logo-img" src="noctelo_logo.webp" alt="Noctelo" />
 
   <div id="emailPanel">
-    <p class="email-label">Zadaj mailovú adresu:</p>
+    <p class="email-label" id="emailLabel">Zadaj mailovú adresu:</p>
     <input class="email-input" id="emailInput" type="email" placeholder="tvoj@email.com" autocomplete="email" />
     <button class="email-btn" id="emailBtn" onclick="submitEmail()">Daj mi vedieť</button>
     <p class="email-msg" id="emailMsg"></p>
@@ -162,31 +180,77 @@
 
   <p class="star-hint" id="starHint">✦ Ťukni na hviezdu ✦</p>
 
-  <p class="tagline">
-    Som na ceste k vám.<br>
-    Prinášam slová, ktoré zostávajú.
-    <hr>
-    Chceš vedieť, kedy dorazím?<br>
-    Ťukni na hviezdu a nechaj svoj mail.<br>
-    Dám ti vedieť.
+  <p class="tagline" id="tagline">
+    Som na ceste k vám.<br>Prinášam slová, ktoré zostávajú.<hr>Chceš vedieť, kedy dorazím?<br>Ťukni na hviezdu a nechaj svoj mail.<br>Dám ti vedieť.
   </p>
-
 </div>
 
 <script>
+  const LANGS = {
+    SK: { name: 'Slovenčina', starHint: '✦ Ťukni na hviezdu ✦', emailLabel: 'Zadaj mailovú adresu:', emailBtn: 'Daj mi vedieť', tagline: 'Som na ceste k vám.<br>Prinášam slová, ktoré zostávajú.<hr>Chceš vedieť, kedy dorazím?<br>Ťukni na hviezdu a nechaj svoj mail.<br>Dám ti vedieť.', success: 'Ďakujeme! Dáme ti vedieť. ✦', duplicate: 'Tento mail už evidujeme. ✦', error: 'Niečo sa nepodarilo. Skúste znova.', invalid: 'Zadaj platnú mailovú adresu.', placeholder: 'tvoj@email.com' },
+    CZ: { name: 'Čeština', starHint: '✦ Ťukni na hvězdu ✦', emailLabel: 'Zadej e-mailovou adresu:', emailBtn: 'Dej mi vědět', tagline: 'Jsem na cestě k vám.<br>Přináším slova, která zůstanou.<hr>Chceš vědět, kdy dorazím?<br>Ťukni na hvězdu a nechej svůj mail.<br>Dám ti vědět.', success: 'Děkujeme! Dáme ti vědět. ✦', duplicate: 'Tento mail již evidujeme. ✦', error: 'Něco se nepovedlo. Zkuste znovu.', invalid: 'Zadej platnou e-mailovou adresu.', placeholder: 'tvuj@email.com' },
+    EN: { name: 'English', starHint: '✦ Tap the star ✦', emailLabel: 'Enter your email address:', emailBtn: 'Let me know', tagline: 'I am on my way to you.<br>Bringing words that remain.<hr>Want to know when I arrive?<br>Tap the star and leave your email.<br>I will let you know.', success: 'Thank you! We will be in touch. ✦', duplicate: 'This email is already registered. ✦', error: 'Something went wrong. Please try again.', invalid: 'Please enter a valid email address.', placeholder: 'your@email.com' },
+    DE: { name: 'Deutsch', starHint: '✦ Tippe auf den Stern ✦', emailLabel: 'Gib deine E-Mail-Adresse ein:', emailBtn: 'Gib mir Bescheid', tagline: 'Ich bin auf dem Weg zu euch.<br>Ich bringe Worte, die bleiben.<hr>Möchtest du wissen, wann ich ankomme?<br>Tippe auf den Stern und hinterlasse deine E-Mail.<br>Ich melde mich.', success: 'Danke! Wir melden uns. ✦', duplicate: 'Diese E-Mail ist bereits registriert. ✦', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.', invalid: 'Bitte gib eine gültige E-Mail-Adresse ein.', placeholder: 'deine@email.de' },
+    FR: { name: 'Français', starHint: '✦ Touche l\'étoile ✦', emailLabel: 'Entre ton adresse e-mail :', emailBtn: 'Tiens-moi informé', tagline: 'Je suis en chemin vers vous.<br>J\'apporte des mots qui restent.<hr>Tu veux savoir quand j\'arrive ?<br>Touche l\'étoile et laisse ton e-mail.<br>Je te ferai signe.', success: 'Merci ! On te tiendra au courant. ✦', duplicate: 'Cet e-mail est déjà enregistré. ✦', error: 'Quelque chose a mal tourné. Réessaie.', invalid: 'Saisis une adresse e-mail valide.', placeholder: 'ton@email.fr' },
+    ES: { name: 'Español', starHint: '✦ Toca la estrella ✦', emailLabel: 'Introduce tu correo electrónico:', emailBtn: 'Avísame', tagline: 'Estoy de camino hacia vosotros.<br>Traigo palabras que quedan.<hr>¿Quieres saber cuándo llego?<br>Toca la estrella y deja tu correo.<br>Te avisaré.', success: '¡Gracias! Te avisaremos. ✦', duplicate: 'Este correo ya está registrado. ✦', error: 'Algo salió mal. Inténtalo de nuevo.', invalid: 'Introduce una dirección de correo válida.', placeholder: 'tu@email.es' },
+    IT: { name: 'Italiano', starHint: '✦ Tocca la stella ✦', emailLabel: 'Inserisci il tuo indirizzo email:', emailBtn: 'Avvisami', tagline: 'Sono in arrivo da voi.<br>Porto parole che restano.<hr>Vuoi sapere quando arrivo?<br>Tocca la stella e lascia la tua email.<br>Ti farò sapere.', success: 'Grazie! Ti faremo sapere. ✦', duplicate: 'Questa email è già registrata. ✦', error: 'Qualcosa è andato storto. Riprova.', invalid: 'Inserisci un indirizzo email valido.', placeholder: 'tua@email.it' },
+    PL: { name: 'Polski', starHint: '✦ Dotknij gwiazdki ✦', emailLabel: 'Podaj swój adres e-mail:', emailBtn: 'Daj mi znać', tagline: 'Jestem w drodze do was.<br>Przynoszę słowa, które zostają.<hr>Chcesz wiedzieć, kiedy dotrę?<br>Dotknij gwiazdki i zostaw swój e-mail.<br>Dam ci znać.', success: 'Dziękujemy! Damy ci znać. ✦', duplicate: 'Ten e-mail jest już zarejestrowany. ✦', error: 'Coś poszło nie tak. Spróbuj ponownie.', invalid: 'Podaj prawidłowy adres e-mail.', placeholder: 'twoj@email.pl' },
+    HU: { name: 'Magyar', starHint: '✦ Érintsd meg a csillagot ✦', emailLabel: 'Add meg az e-mail címed:', emailBtn: 'Értesíts', tagline: 'Úton vagyok felétek.<br>Szavakat hozok, amelyek megmaradnak.<hr>Szeretnéd tudni, mikor érkezem?<br>Érintsd meg a csillagot és hagyd az e-mailodat.<br>Értesítelek.', success: 'Köszönjük! Értesíteni fogunk. ✦', duplicate: 'Ez az e-mail már regisztrálva van. ✦', error: 'Valami hiba történt. Kérjük, próbáld újra.', invalid: 'Kérjük, adj meg érvényes e-mail címet.', placeholder: 'te@email.hu' },
+    TR: { name: 'Türkçe', starHint: '✦ Yıldıza dokun ✦', emailLabel: 'E-posta adresini gir:', emailBtn: 'Haber ver', tagline: 'Size doğru yoldayım.<br>Kalan kelimeler getiriyorum.<hr>Ne zaman geleceğimi öğrenmek ister misin?<br>Yıldıza dokun ve e-postanı bırak.<br>Sana haber vereceğim.', success: 'Teşekkürler! Sana haber vereceğiz. ✦', duplicate: 'Bu e-posta zaten kayıtlı. ✦', error: 'Bir şeyler ters gitti. Lütfen tekrar dene.', invalid: 'Lütfen geçerli bir e-posta adresi gir.', placeholder: 'sen@email.com' },
+  }
+
+  const LANG_ORDER = ['SK','CZ','EN','DE','FR','ES','IT','PL','HU','TR']
+
+  function detectLang() {
+    const stored = localStorage.getItem('noctelo_soon_lang')
+    if (stored && LANGS[stored]) return stored
+    const browser = (navigator.language || '').toUpperCase().slice(0, 2)
+    const map = { SK:'SK', CS:'CZ', EN:'EN', DE:'DE', FR:'FR', ES:'ES', IT:'IT', PL:'PL', HU:'HU', TR:'TR' }
+    return map[browser] || 'EN'
+  }
+
+  let currentLang = detectLang()
+
+  function applyLang(lang) {
+    currentLang = lang
+    localStorage.setItem('noctelo_soon_lang', lang)
+    const t = LANGS[lang]
+    document.getElementById('langLabel').textContent    = lang
+    document.getElementById('starHint').innerHTML       = t.starHint
+    document.getElementById('emailLabel').textContent   = t.emailLabel
+    document.getElementById('emailBtn').textContent     = t.emailBtn
+    document.getElementById('tagline').innerHTML        = t.tagline
+    document.getElementById('emailInput').placeholder   = t.placeholder
+    document.querySelectorAll('.lang-item').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang)
+    })
+  }
+
+  function buildDropdown() {
+    const dd = document.getElementById('langDropdown')
+    dd.innerHTML = ''
+    LANG_ORDER.forEach(lang => {
+      const btn = document.createElement('button')
+      btn.className = 'lang-item' + (lang === currentLang ? ' active' : '')
+      btn.dataset.lang = lang
+      btn.textContent = `${lang} — ${LANGS[lang].name}`
+      btn.onclick = () => { applyLang(lang); closeLang() }
+      dd.appendChild(btn)
+    })
+  }
+
+  function toggleLang() { buildDropdown(); document.getElementById('langDropdown').classList.toggle('open'); document.getElementById('langOverlay').classList.toggle('open') }
+  function closeLang()  { document.getElementById('langDropdown').classList.remove('open'); document.getElementById('langOverlay').classList.remove('open') }
+
+  applyLang(currentLang)
+
   // Pozadie hviezdy
   const bgStars = document.getElementById('bgStars')
   for (let i = 0; i < 80; i++) {
     const s = document.createElement('div')
     s.className = 'bg-star'
     const size = Math.random() * 2.5 + 1
-    s.style.cssText = `
-      width:${size}px; height:${size}px;
-      left:${Math.random()*100}%; top:${Math.random()*100}%;
-      --d:${(Math.random()*4+3).toFixed(1)}s;
-      --delay:${(Math.random()*6).toFixed(1)}s;
-      --op:${(Math.random()*0.5+0.15).toFixed(2)};
-    `
+    s.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${(Math.random()*4+3).toFixed(1)}s;--delay:${(Math.random()*6).toFixed(1)}s;--op:${(Math.random()*0.5+0.15).toFixed(2)};`
     bgStars.appendChild(s)
   }
 
@@ -198,11 +262,10 @@
   let vy = (Math.random() - 0.5) * 0.6
 
   function moveStar() {
-    starX += vx
-    starY += vy
-    const margin = 30
-    if (starX < margin || starX > window.innerWidth - margin - 46) vx *= -1
-    if (starY < margin || starY > window.innerHeight - margin - 46) vy *= -1
+    starX += vx; starY += vy
+    const m = 30
+    if (starX < m || starX > window.innerWidth  - m - 46) vx *= -1
+    if (starY < m || starY > window.innerHeight - m - 46) vy *= -1
     star.style.left = starX + 'px'
     star.style.top  = starY + 'px'
     requestAnimationFrame(moveStar)
@@ -212,18 +275,13 @@
 
   // Klik na hviezdu
   const emailPanel = document.getElementById('emailPanel')
-  const starHint   = document.getElementById('starHint')
   let panelVisible = false
 
   star.addEventListener('click', function(e) {
-    // Tajný hmat: Ctrl+Shift+klik → server-side redirect (URL skrytá)
-    if (e.ctrlKey && e.shiftKey) {
-      window.location.href = '/api/go'
-      return
-    }
+    if (e.ctrlKey && e.shiftKey) { window.location.href = '/api/go'; return }
     if (!panelVisible) {
       emailPanel.classList.add('visible')
-      starHint.style.display = 'none'
+      document.getElementById('starHint').style.display = 'none'
       panelVisible = true
       setTimeout(() => document.getElementById('emailInput').focus(), 100)
     }
@@ -234,19 +292,16 @@
     const input = document.getElementById('emailInput')
     const btn   = document.getElementById('emailBtn')
     const msg   = document.getElementById('emailMsg')
+    const t     = LANGS[currentLang]
     const email = input.value.trim()
 
-    msg.className = 'email-msg'
-    msg.textContent = ''
+    msg.className = 'email-msg'; msg.textContent = ''
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      msg.className = 'email-msg error'
-      msg.textContent = 'Zadaj platnú mailovú adresu.'
-      return
+      msg.className = 'email-msg error'; msg.textContent = t.invalid; return
     }
 
-    btn.disabled = true
-    btn.textContent = '...'
+    btn.disabled = true; btn.textContent = '...'
 
     try {
       const SUPABASE_URL  = 'https://zrfgqxuobdtcvlhwbind.supabase.co'
@@ -254,40 +309,24 @@
 
       const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_ANON,
-          'Authorization': `Bearer ${SUPABASE_ANON}`,
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ email })
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}`, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ email, lang: currentLang })
       })
 
       if (res.ok || res.status === 201) {
-        msg.className = 'email-msg success'
-        msg.textContent = 'Ďakujeme! Dáme ti vedieť. ✦'
-        input.value = ''
-        btn.textContent = '✓'
+        msg.className = 'email-msg success'; msg.textContent = t.success
+        input.value = ''; btn.textContent = '✓'
       } else if (res.status === 409) {
-        msg.className = 'email-msg success'
-        msg.textContent = 'Tento mail už evidujeme. ✦'
-        btn.disabled = false
-        btn.textContent = 'Daj mi vedieť'
-      } else {
-        throw new Error('status ' + res.status)
-      }
-    } catch (err) {
-      msg.className = 'email-msg error'
-      msg.textContent = 'Niečo sa nepodarilo. Skúste znova.'
-      btn.disabled = false
-      btn.textContent = 'Daj mi vedieť'
+        msg.className = 'email-msg success'; msg.textContent = t.duplicate
+        btn.disabled = false; btn.textContent = t.emailBtn
+      } else { throw new Error('status ' + res.status) }
+    } catch {
+      msg.className = 'email-msg error'; msg.textContent = t.error
+      btn.disabled = false; btn.textContent = t.emailBtn
     }
   }
 
-  document.getElementById('emailInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') submitEmail()
-  })
+  document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitEmail() })
 </script>
-
 </body>
 </html>
