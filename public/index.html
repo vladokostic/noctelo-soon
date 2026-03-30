@@ -316,6 +316,11 @@
       if (res.ok || res.status === 201) {
         msg.className = 'email-msg success'; msg.textContent = t.success
         input.value = ''; btn.textContent = '✓'
+        // Hviezda zmizne po úspešnom zápise
+        const s = document.getElementById('floatingStar')
+        s.style.transition = 'opacity 0.8s ease'
+        s.style.opacity = '0'
+        setTimeout(() => { s.style.display = 'none' }, 800)
       } else if (res.status === 409) {
         msg.className = 'email-msg success'; msg.textContent = t.duplicate
         btn.disabled = false; btn.textContent = t.emailBtn
