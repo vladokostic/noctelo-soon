@@ -317,8 +317,19 @@
       })
 
       if (res.ok || res.status === 201) {
-        msg.className = 'email-msg success'; msg.textContent = t.success
-        input.value = ''; btn.textContent = '✓'
+        // Skry panel, zobraz len poďakovanie
+        const panel = document.getElementById('emailPanel')
+        panel.style.transition = 'opacity 0.5s ease'
+        panel.style.opacity = '0'
+        setTimeout(() => {
+          panel.style.display = 'none'
+          msg.className = 'email-msg success'
+          msg.textContent = t.success
+          msg.style.display = 'block'
+          msg.style.fontSize = '18px'
+          msg.style.padding = '16px 0'
+          document.getElementById('emailPanel').parentNode.insertBefore(msg, document.getElementById('emailPanel').nextSibling)
+        }, 500)
         // Hviezda zmizne po úspešnom zápise
         const s = document.getElementById('floatingStar')
         s.style.transition = 'opacity 0.8s ease'
