@@ -317,20 +317,16 @@
       })
 
       if (res.ok || res.status === 201) {
-        // Skry panel, zobraz len poďakovanie
-        const panel = document.getElementById('emailPanel')
-        panel.style.transition = 'opacity 0.5s ease'
-        panel.style.opacity = '0'
-        setTimeout(() => {
-          panel.style.display = 'none'
-          msg.className = 'email-msg success'
-          msg.textContent = t.success
-          msg.style.display = 'block'
-          msg.style.fontSize = '18px'
-          msg.style.padding = '16px 0'
-          document.getElementById('emailPanel').parentNode.insertBefore(msg, document.getElementById('emailPanel').nextSibling)
-        }, 500)
-        // Hviezda zmizne po úspešnom zápise
+        // Skry panel, zobraz poďakovanie na mieste starHint
+        document.getElementById('emailPanel').style.display = 'none'
+        const hint = document.getElementById('starHint')
+        hint.style.display = 'block'
+        hint.style.animation = 'none'
+        hint.style.opacity = '1'
+        hint.style.color = 'rgba(136,204,68,0.9)'
+        hint.style.fontSize = '17px'
+        hint.textContent = t.success
+        // Hviezda zmizne
         const s = document.getElementById('floatingStar')
         s.style.transition = 'opacity 0.8s ease'
         s.style.opacity = '0'
