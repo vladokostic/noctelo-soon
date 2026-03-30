@@ -180,9 +180,7 @@
 
   <p class="star-hint" id="starHint">✦ Ťukni na hviezdu ✦</p>
 
-  <p class="tagline" id="tagline">
-    Som na ceste k vám.<br>Prinášam slová, ktoré zostávajú.<hr>Chceš vedieť, kedy dorazím?<br>Ťukni na hviezdu a nechaj svoj mail.<br>Dám ti vedieť.
-  </p>
+  <p class="tagline" id="tagline"></p>
 </div>
 
 <script>
@@ -242,9 +240,11 @@
   function toggleLang() { buildDropdown(); document.getElementById('langDropdown').classList.toggle('open'); document.getElementById('langOverlay').classList.toggle('open') }
   function closeLang()  { document.getElementById('langDropdown').classList.remove('open'); document.getElementById('langOverlay').classList.remove('open') }
 
-  applyLang(currentLang)
+  // Inicializácia po načítaní DOM
+  window.addEventListener('load', function() {
+    applyLang(currentLang)
 
-  // Pozadie hviezdy
+    // Pozadie hviezdy
   const bgStars = document.getElementById('bgStars')
   for (let i = 0; i < 80; i++) {
     const s = document.createElement('div')
@@ -327,6 +327,7 @@
   }
 
   document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') submitEmail() })
+  }) // end window.onload
 </script>
 </body>
 </html>
