@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Noctelo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: radial-gradient(ellipse at 60% 30%, #5C2800 0%, #2A0E00 40%, #0D0400 100%);
+      min-height: 100dvh;
+      font-family: Georgia, serif;
+      color: #FFE8A0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Pozadie hviezdy */
+    .bg-stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .bg-star {
+      position: absolute; border-radius: 50%;
+      background: #FFE8A0; opacity: 0;
+      animation: twinkle var(--d) var(--delay) ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: var(--op); transform: scale(1); }
+    }
+
+    /* Obsah */
+    .content {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 52px 24px 72px; max-width: 520px; width: 100%;
+    }
+
+    .title {
+      font-size: clamp(38px, 10vw, 66px);
+      font-weight: 700; letter-spacing: 0.18em;
+      color: #FFD050;
+      text-shadow: 0 0 40px rgba(255,180,0,0.5), 0 0 80px rgba(255,140,0,0.2);
+      margin-bottom: 36px;
+    }
+
+    .logo-img {
+      width: min(320px, 82vw); height: auto;
+      border-radius: 18px; margin-bottom: 32px; display: block;
+    }
+
+    .tagline {
+      font-size: clamp(15px, 4vw, 18px);
+      line-height: 1.85; color: rgba(255,220,140,0.85);
+      text-align: center; margin-bottom: 52px; max-width: 380px;
+    }
+    .tagline hr {
+      border: none; border-top: 1px solid rgba(255,160,0,0.2);
+      margin: 18px 0;
+    }
+
+    /* Plávajúca hviezda */
+    #floatingStar {
+      position: fixed;
+      width: 46px; height: 46px;
+      cursor: pointer; z-index: 200;
+      filter: drop-shadow(0 0 8px rgba(255,200,0,0.65));
+      transition: filter 0.2s;
+      user-select: none;
+    }
+    #floatingStar:hover {
+      filter: drop-shadow(0 0 20px rgba(255,220,0,1));
+    }
+
+    /* Email panel */
+    #emailPanel {
+      display: none; flex-direction: column; align-items: center; gap: 12px;
+      background: rgba(30,10,0,0.94);
+      border: 1.5px solid rgba(255,160,0,0.3);
+      border-radius: 20px; padding: 28px 24px;
+      max-width: 340px; width: 90%;
+      animation: fadeIn 0.35s ease;
+      margin-bottom: 32px;
+    }
+    #emailPanel.visible { display: flex; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .email-label {
+      font-size: 15px; color: rgba(255,220,140,0.82);
+      text-align: center; line-height: 1.6;
+    }
+    .email-input {
+      width: 100%;
+      background: rgba(255,140,0,0.08);
+      border: 1.5px solid rgba(255,140,0,0.3);
+      border-radius: 12px; padding: 12px 16px;
+      color: #FFE8A0; font-size: 16px;
+      font-family: inherit; outline: none; text-align: center;
+    }
+    .email-input::placeholder { color: rgba(255,160,0,0.35); }
+    .email-input:focus { border-color: rgba(255,160,0,0.65); }
+
+    .email-btn {
+      width: 100%; padding: 13px;
+      background: #CC7700; border: none; border-radius: 12px;
+      color: #FFE8A0; font-size: 15px; font-weight: 700;
+      font-family: inherit; cursor: pointer; transition: background 0.2s;
+    }
+    .email-btn:hover:not(:disabled) { background: #E08800; }
+    .email-btn:disabled { background: rgba(255,140,0,0.2); cursor: default; }
+
+    .email-msg {
+      font-size: 14px; text-align: center; line-height: 1.6;
+      display: none;
+    }
+    .email-msg.success { color: #88CC44; display: block; }
+    .email-msg.error   { color: #CC4433; display: block; }
+
+    .star-hint {
+      font-size: 13px; color: rgba(255,180,60,0.5);
+      text-align: center; margin-bottom: 40px;
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.45; }
+      50%       { opacity: 0.9; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-stars" id="bgStars"></div>
+
+<svg id="floatingStar" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg" title="Ťukni na hviezdu">
+  <circle cx="23" cy="23" r="19" fill="rgba(255,200,0,0.07)"/>
+  <circle cx="23" cy="23" r="12" fill="rgba(255,200,0,0.11)"/>
+  <polygon
+    points="23,4 27.8,17 42,17 30.6,25.6 34.9,38.5 23,30.5 11.1,38.5 15.4,25.6 4,17 18.2,17"
+    fill="#FFD050"
+    stroke="rgba(255,230,100,0.55)" stroke-width="0.6"
+  />
+</svg>
+
+<div class="content">
+
+  <div class="title">NOCTELO</div>
+
+  <img class="logo-img" src="noctelo_logo.webp" alt="Noctelo" />
+
+  <div id="emailPanel">
+    <p class="email-label">Zadaj mailovú adresu:</p>
+    <input class="email-input" id="emailInput" type="email" placeholder="tvoj@email.com" autocomplete="email" />
+    <button class="email-btn" id="emailBtn" onclick="submitEmail()">Daj mi vedieť</button>
+    <p class="email-msg" id="emailMsg"></p>
+  </div>
+
+  <p class="star-hint" id="starHint">✦ Ťukni na hviezdu ✦</p>
+
+  <p class="tagline">
+    Som na ceste k vám.<br>
+    Prinášam slová, ktoré zostávajú.
+    <hr>
+    Chceš vedieť, kedy dorazím?<br>
+    Ťukni na hviezdu a nechaj svoj mail.<br>
+    Dám ti vedieť.
+  </p>
+
+</div>
+
+<script>
+  // Pozadie hviezdy
+  const bgStars = document.getElementById('bgStars')
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div')
+    s.className = 'bg-star'
+    const size = Math.random() * 2.5 + 1
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      --d:${(Math.random()*4+3).toFixed(1)}s;
+      --delay:${(Math.random()*6).toFixed(1)}s;
+      --op:${(Math.random()*0.5+0.15).toFixed(2)};
+    `
+    bgStars.appendChild(s)
+  }
+
+  // Plávajúca hviezda
+  const star = document.getElementById('floatingStar')
+  let starX = window.innerWidth * 0.72
+  let starY = window.innerHeight * 0.28
+  let vx = (Math.random() - 0.5) * 0.6
+  let vy = (Math.random() - 0.5) * 0.6
+
+  function moveStar() {
+    starX += vx
+    starY += vy
+    const margin = 30
+    if (starX < margin || starX > window.innerWidth - margin - 46) vx *= -1
+    if (starY < margin || starY > window.innerHeight - margin - 46) vy *= -1
+    star.style.left = starX + 'px'
+    star.style.top  = starY + 'px'
+    requestAnimationFrame(moveStar)
+  }
+  star.style.position = 'fixed'
+  moveStar()
+
+  // Klik na hviezdu
+  const emailPanel = document.getElementById('emailPanel')
+  const starHint   = document.getElementById('starHint')
+  let panelVisible = false
+
+  star.addEventListener('click', function(e) {
+    // Tajný hmat: Ctrl+Shift+klik → server-side redirect (URL skrytá)
+    if (e.ctrlKey && e.shiftKey) {
+      window.location.href = '/api/go'
+      return
+    }
+    if (!panelVisible) {
+      emailPanel.classList.add('visible')
+      starHint.style.display = 'none'
+      panelVisible = true
+      setTimeout(() => document.getElementById('emailInput').focus(), 100)
+    }
+  })
+
+  // Odoslanie emailu
+  async function submitEmail() {
+    const input = document.getElementById('emailInput')
+    const btn   = document.getElementById('emailBtn')
+    const msg   = document.getElementById('emailMsg')
+    const email = input.value.trim()
+
+    msg.className = 'email-msg'
+    msg.textContent = ''
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg.className = 'email-msg error'
+      msg.textContent = 'Zadaj platnú mailovú adresu.'
+      return
+    }
+
+    btn.disabled = true
+    btn.textContent = '...'
+
+    try {
+      const SUPABASE_URL  = 'https://zrfgqxuobdtcvlhwbind.supabase.co'
+      const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpyZmdxeHVvYmR0Y3ZsaHdiaW5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY0MDM4MjMsImV4cCI6MjA4MTk3OTgyM30.5gRGbgn7S8pMbPLl_2iDtsMmGH9ji6wZeinLF_UFILY'
+
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON,
+          'Authorization': `Bearer ${SUPABASE_ANON}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ email })
+      })
+
+      if (res.ok || res.status === 201) {
+        msg.className = 'email-msg success'
+        msg.textContent = 'Ďakujeme! Dáme ti vedieť. ✦'
+        input.value = ''
+        btn.textContent = '✓'
+      } else if (res.status === 409) {
+        msg.className = 'email-msg success'
+        msg.textContent = 'Tento mail už evidujeme. ✦'
+        btn.disabled = false
+        btn.textContent = 'Daj mi vedieť'
+      } else {
+        throw new Error('status ' + res.status)
+      }
+    } catch (err) {
+      msg.className = 'email-msg error'
+      msg.textContent = 'Niečo sa nepodarilo. Skúste znova.'
+      btn.disabled = false
+      btn.textContent = 'Daj mi vedieť'
+    }
+  }
+
+  document.getElementById('emailInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitEmail()
+  })
+</script>
+
+</body>
+</html>
