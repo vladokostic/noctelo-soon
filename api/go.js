@@ -1,8 +1,6 @@
 export default function handler(req, res) {
-  const url = process.env.DEV_URL
-  if (!url) {
-    res.status(404).end()
-    return
+  if (req.headers['x-owner'] !== 'true') {
+    return res.status(404).end()
   }
-  res.redirect(302, url)
+  res.json({ url: process.env.DEV_URL })
 }
