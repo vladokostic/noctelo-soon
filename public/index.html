@@ -279,15 +279,24 @@
   // Klik na hviezdu
   const emailPanel = document.getElementById('emailPanel')
   let panelVisible = false
+  let secretTaps = 0
+  let secretTimer = null
 
   function handleStarTap(e) {
-    if (e.ctrlKey && e.shiftKey) {
+    if (e.cancelable) e.preventDefault()
+
+    // Tajný vstup: 7× tap do 4 sekúnd
+    secretTaps++
+    clearTimeout(secretTimer)
+    if (secretTaps >= 7) {
+      secretTaps = 0
       fetch('/api/go', { headers: { 'x-owner': 'true' } })
         .then(r => r.json())
         .then(d => { if (d.url) window.location.href = d.url })
       return
     }
-    if (e.cancelable) e.preventDefault()
+    secretTimer = setTimeout(() => { secretTaps = 0 }, 4000)
+
     if (!panelVisible) {
       emailPanel.classList.add('visible')
       document.getElementById('starHint').style.display = 'none'
